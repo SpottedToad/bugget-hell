@@ -3,10 +3,12 @@
 .nomedia
 *.import
 
+
 # Godot-specific ignores
 .import/
 export.cfg
 export_credentials.cfg
+build-libs/
 
 # Backstitch launcher-specific ignores
 .backstitch/
