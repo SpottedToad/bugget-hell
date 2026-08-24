@@ -1,4 +1,5 @@
 extends CharacterBody2D
+signal hit
 
 @onready var _animation_player = $AnimatedSprite2D
 @export var speed = 400.0
@@ -6,7 +7,12 @@ var screen_size
 
 func _ready():
 	screen_size = get_viewport_rect().size
-	hide()
+	#hide()
+
+func start(pos):
+	position = pos
+	show()
+	$CollisionShape2D.disabled = false
 
 func _process(delta):
 	# Player controls
@@ -35,8 +41,12 @@ func _process(delta):
 		$AnimatedSprite2D.flip_h = true
 	else:
 		$AnimatedSprite2D.flip_h = false
-
 		
 	# update player position and prevent player from leaving screen
 	position += velocity * delta
 	position = position.clamp(Vector2.ZERO, screen_size)
+
+func _on_body_entered(_body):
+	hide() # Player disappears after being hit.
+	hit.emit()
+	$CollisionShape2D.set_deferred("disabled", true)
